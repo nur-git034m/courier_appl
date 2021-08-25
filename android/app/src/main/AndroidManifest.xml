@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.courier_appl">
+      <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
+         <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="courier_appl"
         android:icon="@mipmap/ic_launcher">
