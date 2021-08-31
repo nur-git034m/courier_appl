@@ -1,5 +1,5 @@
-import 'package:courier_appl/presentation/screens/auth_screen/auth_screend.dart';
-import 'package:courier_appl/presentation/screens/show_screens/show_screen.dart';
+import 'package:courier_appl/presentation/screens/list_shop_map/list_shops_map.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
@@ -126,7 +126,7 @@ class _QuickEntryPageState extends State<QuickEntryPage> {
     });
     if (authenticated == true) {
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => ShowScreen()));
+          context, MaterialPageRoute(builder: (context) => List_shops_map()));
     }
   }
 
@@ -202,7 +202,7 @@ class _QuickEntryPageState extends State<QuickEntryPage> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>  ShowScreen()));
+                                builder: (context) =>  const List_shops_map()));
                       }
                     },
                     onBiometric: () {
