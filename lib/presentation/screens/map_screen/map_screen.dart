@@ -4,7 +4,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart' as latlng;
 
 class MapScreen extends StatefulWidget {
-  const MapScreen({Key key}) : super(key: key);
+  const MapScreen({Key? key}) : super(key: key);
 
   @override
   _MapScreenState createState() => _MapScreenState();
@@ -33,7 +33,7 @@ class _MapScreenState extends State<MapScreen> {
           layers: [
             TileLayerOptions(
               // tileProvider: const AssetTileProvider(),
-              urlTemplate: 'https://{s}.maps.2gis.com/tiles?x={x}&y={y}&z={z}',
+   urlTemplate: 'https://{s}.maps.2gis.com/tiles?x={x}&y={y}&z={z}',
               subdomains: ['tile0', 'tile1', 'tile2', 'tile3'],
             ),
             MarkerLayerOptions(
