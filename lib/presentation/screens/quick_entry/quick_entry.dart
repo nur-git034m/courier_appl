@@ -3,12 +3,13 @@ import 'package:courier_appl/presentation/screens/list_shop_map/list_shops_map.d
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:pin_keyboard/pin_keyboard.dart';
 import 'package:pin_dot/pin_dot.dart';
+import 'package:pin_keyboard/pin_keyboard.dart';
+
 import 'package:flutter/cupertino.dart';
 
 class QuickEntryPage extends StatefulWidget {
-  const QuickEntryPage({Key key}) : super(key: key);
+  const QuickEntryPage({Key? key}) : super(key: key);
 
   @override
   _QuickEntryPageState createState() => _QuickEntryPageState();
@@ -16,12 +17,12 @@ class QuickEntryPage extends StatefulWidget {
 
 class _QuickEntryPageState extends State<QuickEntryPage> {
   String pin_code = '';
-  Size size;
+  late Size size;
 
   final LocalAuthentication auth = LocalAuthentication();
   _SupportState _supportState = _SupportState.unknown;
-  bool _canCheckBiometrics;
-  List<BiometricType> _availableBiometrics;
+  late bool _canCheckBiometrics;
+  late List<BiometricType> _availableBiometrics;
   String _authorized = 'Not Authorized';
   bool _isAuthenticating = false;
 
@@ -126,7 +127,7 @@ class _QuickEntryPageState extends State<QuickEntryPage> {
     });
     if (authenticated == true) {
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => List_shops_map()));
+          context, MaterialPageRoute(builder: (context) => const List_shops_map()));
     }
   }
 

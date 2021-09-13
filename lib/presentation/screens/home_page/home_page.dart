@@ -6,7 +6,7 @@ import 'package:courier_appl/presentation/screens/profile_screen/profie_screen.d
 import 'package:flutter/material.dart';
 
 class Homepage extends StatefulWidget {
-  Homepage({Key key}) : super(key: key);
+  const Homepage({Key? key}) : super(key: key);
 
   @override
   _Home_pageState createState() => _Home_pageState();
@@ -14,16 +14,16 @@ class Homepage extends StatefulWidget {
 
 class _Home_pageState extends State<Homepage> {
   final List<IconData> iconList = [Icons.home, Icons.person];
-  final List pages = [List_shops_map(), ProfilePage()];
+  final List pages = [const List_shops_map(), const ProfilePage()];
   int _bottomNavIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar(context, _bottomNavIndex == 0 ? '7Food на карте': 'Профиль'),
+      appBar: appBar(context, _bottomNavIndex == 0 ? '7Food на карте': 'Профиль',const Icon(Icons.arrow_forward_ios,)),
       body: pages[_bottomNavIndex],
       floatingActionButton: MediaQuery.of(context).viewInsets.bottom==0
       ? floatinActionButton(context)
-      : SizedBox(),
+      : const SizedBox(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: AnimatedBottomNavigationBar(
         activeColor: AppColors.kActiveColor,

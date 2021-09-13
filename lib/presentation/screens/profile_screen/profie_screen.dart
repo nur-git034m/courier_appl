@@ -1,91 +1,169 @@
+import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:courier_appl/constants/constants_color.dart';
+import 'package:courier_appl/constants/widgets.dart';
+import 'package:courier_appl/data/services/user_service.dart';
+import 'package:courier_appl/models/User.dart';
 import 'package:courier_appl/presentation/screens/history_page/history_page.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key key}) : super(key: key);
+  const ProfilePage({Key? key}) : super(key: key);
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  String _number = '';
+  
+  
+   final List<IconData> iconList = [Icons.home, Icons.person];
 
-  String _name = '';
+
+   final formKey = GlobalKey<FormState>();
+    int _bottomNavIndex = 0;
+
+    final _numberController = TextEditingController();
+
+    final _nameController = TextEditingController();
+
+ late Future <User> userInfo ;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    userInfo = UserService().ProfileNameAndPhone();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-      color: const Color(0xFFE5E5E5),
-      child: ListView(
-        children: [
-          Container(
-            padding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.04),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            ),
-            child: Column(
-              children: [
-                TextFormField(
-                  textAlign: TextAlign.start,
-                  decoration: const InputDecoration(
-                    isDense: true,
-                    labelText: 'Имя',
-                    suffix: TextButton(
-                        child: Text(
-                      'Изменить',
-                    )),
-                  ),
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Пожалуйста, введите свой имя';
-                    }
-                    return null;
-                  },
-                  onChanged: (value) => _name = value,
+    return Scaffold(
+      
+    body: FutureBuilder<User>(
+      future: userInfo,
+      builder: (context,snapshot){
+         if(snapshot.hasError){
+           print('Error');
+         }else if(snapshot.hasData){
+           _nameController.text = snapshot.data!.data.name;
+           _numberController.text = snapshot.data!.data.phone;
+         }
+         return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+        color: const Color(0xFFE5E5E5),
+        child: ListView(
+          children: [
+            Container(
+              padding: const EdgeInsets.only(top: 30,left: 22,right: 24,bottom: 4),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 1,
+                      blurRadius: 3,
+                      offset: const Offset(0, 3),
+                    ),
+                  ]),
+              child: Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    const Align(
+                      alignment: Alignment.topLeft,
+                      child: Text('Имя'),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFEFF2F7),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: TextFormField(
+                        
+                        controller: _nameController,
+                        decoration: InputDecoration(
+                            fillColor: Colors.red,
+                            border: InputBorder.none,
+                            suffix: TextButton(
+                              child: const Text('изменить'),
+                              onPressed: () {
+                                setState(() {
+              
+                                });
+              
+                              },
+                              
+                            )),
+                            onEditingComplete: (){
+                              UserService().ChangeNameAndPhone(_nameController.text, _numberController.text);
+                            },
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    const Align(
+                      alignment: Alignment.topLeft,
+                      child: Text('Номер'),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFEFF2F7),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: TextFormField(
+                        controller: _numberController,
+                        decoration: const InputDecoration(
+                          fillColor: Colors.red,
+                          border: InputBorder.none,
+                         
+                        ),
+                        keyboardType: TextInputType.phone,
+                      ),
+                    ),
+                  ],
                 ),
-                TextFormField(
-                  textAlign: TextAlign.start,
-                  keyboardType: TextInputType.phone,
-                  decoration: const InputDecoration(
-                    labelText: 'Номер',
-                    suffix: TextButton(child: Text('Изменить')),
+              ),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Container(
+              margin: EdgeInsets.only(
+                top: MediaQuery.of(context).size.height * 0.02,
+              ),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width * 0.135,
+                    vertical: MediaQuery.of(context).size.height *0.02,
                   ),
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Пожалуйста, введите свой номер';
-                    }
-                    return null;
-                  },
-                  onChanged: (value) => _number = value,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  primary: AppColors.kbackground,
                 ),
-              ],
+                child: const Text(
+                  'История добавления товара',
+                  style: TextStyle(fontSize: 20.0),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HistoryPage()),
+                  );
+                },
+              ),
             ),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              shape: const StadiumBorder(),
-              primary: AppColors.kbackground,
-            ),
-            child: const Text(
-              'История добавления товара',
-              style: TextStyle(fontSize: 20.0),
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => HistoryPage()),
-              );
-            },
-          ),
-        ],
-      ),
+          ],
+        ),
+      );
+      },
+      
+    ),
+    
     );
   }
 }

@@ -1,9 +1,9 @@
 import 'package:courier_appl/constants/constants_color.dart';
-import 'package:courier_appl/presentation/screens/quick_entry/quick_entry.dart';
+import 'package:courier_appl/data/services/user_service.dart';
 import 'package:flutter/material.dart';
 
 class AuthScreen extends StatefulWidget {
-  const AuthScreen({Key key}) : super(key: key);
+  const AuthScreen({Key? key}) : super(key: key);
 
   @override
   State<AuthScreen> createState() => _AuthScreenState();
@@ -12,22 +12,16 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  String _number = '';
+   int phoneNumber =0 ;
+   String  password = '';
+  
 
-  String _password = '';
+  final phoneController =TextEditingController();
+  final passwordController = TextEditingController();
 
-  void _trySubmitForm() {
-    final isValid = _formKey.currentState.validate();
-    if (isValid) {
-      print(_number);
 
-      print(_password);
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const QuickEntryPage()),
-      );
-    }
-  }
+
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -67,18 +61,19 @@ class _AuthScreenState extends State<AuthScreen> {
                       labelText: 'Номер/email',
                     ),
                     validator: (value) {
-                      if (value.isEmpty) {
+                      if (value!.isEmpty) {
                         return 'Пожалуйста, введите свой адрес электронной почты';
                       }
                       return null;
                     },
-                    onChanged: (value) => _number = value,
+                    onSaved: (value) => phoneController.text = value!,
+                    
                   ),
                   TextFormField(
                     decoration: const InputDecoration(labelText: 'Пароль'),
                     obscureText: true,
                     validator: (value) {
-                      if (value.isEmpty) {
+                      if (value!.isEmpty) {
                         return 'Это поле является обязательным';
                       }
                       if (value.trim().length < 8) {
@@ -86,7 +81,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       }
                       return null;
                     },
-                    onChanged: (value) => _password = value,
+                    onSaved: (value) => passwordController.text = value!,
                   ),
                 ],
               ),
@@ -97,9 +92,9 @@ class _AuthScreenState extends State<AuthScreen> {
             ),
             width: 308,
             height: 227,
-            decoration: const BoxDecoration(
+            decoration:  BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(20.0),
                 topRight: Radius.circular(20.0),
                 bottomLeft: Radius.circular(13.0),
@@ -110,7 +105,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   color: AppColors.kshadow,
                   blurRadius: 1,
                   spreadRadius: 1,
-                  offset: Offset(0, 4),
+                  offset: const Offset(0, 4),
                 ),
               ],
             ),
@@ -130,7 +125,16 @@ class _AuthScreenState extends State<AuthScreen> {
                 'Отправить',
                 style: TextStyle(fontSize: 20.0),
               ),
-              onPressed: _trySubmitForm,
+              onPressed: (){
+                final isValid = _formKey.currentState!.validate();
+                if(isValid){
+                    _formKey.currentState!.save();
+                    final message = 'Telephone: $phoneNumber /n Password: $password';
+                
+                }
+                 UserService().LoginNumberAndPassword(phoneController.text, passwordController.text, context);
+              },
+             
             ),
           ),
           Container(
