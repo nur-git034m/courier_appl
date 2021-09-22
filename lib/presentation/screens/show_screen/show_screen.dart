@@ -1,9 +1,9 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:courier_appl/constants/constants_color.dart';
 import 'package:courier_appl/constants/widgets.dart';
-import 'package:courier_appl/data/services/Show_case_service.dart';
+import 'package:courier_appl/data/services/show_case_service.dart';
 import 'package:courier_appl/data/services/list_shops_service.dart';
-import 'package:courier_appl/models/Show_case.dart';
+import 'package:courier_appl/models/show_case.dart';
 import 'package:courier_appl/models/list_shops.dart';
 import 'package:flutter/material.dart';
 

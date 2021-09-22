@@ -1,5 +1,5 @@
 // ignore_for_file: file_names
-import 'package:courier_appl/models/Show_case.dart';
+import 'package:courier_appl/models/show_case.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
