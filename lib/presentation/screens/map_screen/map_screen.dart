@@ -20,36 +20,35 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(ctx) {
-    return Container(
-        height: MediaQuery.of(context).size.height * 0.66,
-        width: MediaQuery.of(context).size.width * 1,
-        child: FlutterMap(
-          options: MapOptions(
-            center: latlng.LatLng(56.704173, 11.543808),
-            zoom: 13.0,
-            // swPanBoundary:latlng.LatLng(56.6877, 11.5089),
-            // nePanBoundary: latlng.LatLng(56.7378, 11.6644),
+    return Expanded(
+      child: FlutterMap(
+        options: MapOptions(
+          center: latlng.LatLng(56.704173, 11.543808),
+          zoom: 13.0,
+          // swPanBoundary:latlng.LatLng(56.6877, 11.5089),
+          // nePanBoundary: latlng.LatLng(56.7378, 11.6644),
+        ),
+        layers: [
+          TileLayerOptions(
+            // tileProvider: const AssetTileProvider(),
+       urlTemplate: 'https://{s}.maps.2gis.com/tiles?x={x}&y={y}&z={z}',
+            subdomains: ['tile0', 'tile1', 'tile2', 'tile3'],
           ),
-          layers: [
-            TileLayerOptions(
-              // tileProvider: const AssetTileProvider(),
-   urlTemplate: 'https://{s}.maps.2gis.com/tiles?x={x}&y={y}&z={z}',
-              subdomains: ['tile0', 'tile1', 'tile2', 'tile3'],
-            ),
-            MarkerLayerOptions(
-              markers: [
-                Marker(
-                    width: 80.0,
-                    height: 80.0,
-                    rotate: true,
-                    point: latlng.LatLng(43.238949, 76.889709),
-                    builder: (ctx) => const Icon(
-                          Icons.person,
-                          color: Colors.blue,
-                        )),
-              ],
-            ),
-          ],
-        ));
+          MarkerLayerOptions(
+            markers: [
+              Marker(
+                  width: 80.0,
+                  height: 80.0,
+                  rotate: true,
+                  point: latlng.LatLng(43.238949, 76.889709),
+                  builder: (ctx) => const Icon(
+                        Icons.person,
+                        color: Colors.blue,
+                      )),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }

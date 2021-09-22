@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:courier_appl/models/User.dart';
+import 'package:courier_appl/presentation/screens/home_page/home_page.dart';
 import 'package:courier_appl/presentation/screens/profile_screen/profie_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -15,9 +16,10 @@ class UserService {
     if (response.statusCode == 200) {
        SharedPreferences prefs = await SharedPreferences.getInstance();
        prefs.setString('token', json.decode(response.body)['token']);
+        prefs.setInt('id', json.decode(response.body)['id']);
       print(response.body);
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const ProfilePage()));
+          context, MaterialPageRoute(builder: (context) => const Homepage()));
     } else {
       print(response.statusCode);
     }

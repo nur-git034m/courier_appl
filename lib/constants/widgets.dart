@@ -38,3 +38,21 @@ FloatingActionButton floatinActionButton(context) {
     },
   );
 }
+
+
+
+
+  Widget networkImage  ( context,String imageNetwork ) {
+    return Image.network(
+      imageNetwork,
+     
+      fit: BoxFit.fitWidth,
+      width:
+          MediaQuery.of(context).size.width *
+              0.320,
+      height:
+          MediaQuery.of(context).size.height *
+              0.2,
+    );
+  }
+

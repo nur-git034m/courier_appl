@@ -19,7 +19,7 @@ class _Home_pageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar(context, _bottomNavIndex == 0 ? '7Food на карте': 'Профиль',const Icon(Icons.arrow_forward_ios,)),
+      appBar: appBar(context, _bottomNavIndex == 0 ? '7Food на карте': 'Профиль', const Icon(Icons.arrow_back_ios,)),
       body: pages[_bottomNavIndex],
       floatingActionButton: MediaQuery.of(context).viewInsets.bottom==0
       ? floatinActionButton(context)

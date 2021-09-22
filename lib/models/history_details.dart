@@ -1,11 +1,11 @@
 // ignore_for_file: file_names
 
-class HistoryProducts {
+class HistoryDetails {
   late Data data;
 
-  HistoryProducts({required this.data});
+  HistoryDetails({required this.data});
 
-  HistoryProducts.fromJson(Map<String, dynamic> json) {
+  HistoryDetails.fromJson(Map<String, dynamic> json) {
     data = (json['data'] != null ? new Data.fromJson(json['data']) : null)!;
   }
 

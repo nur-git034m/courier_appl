@@ -1,12 +1,12 @@
-import 'package:courier_appl/models/history_productsList.dart';
+import 'package:courier_appl/models/history_details.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class History_Product_Service{
+class History_details_service{
 
-Future<HistoryProducts> getHistoryofProducts() async {
+Future<HistoryDetails> getHistoryofProducts(int id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString('token');
     print(token);
@@ -18,10 +18,10 @@ Future<HistoryProducts> getHistoryofProducts() async {
     };
 
     http.Response response = await http
-        .get(Uri.parse('https://7food.kz/api/users/histories/10099/details'), headers: headers);
+        .get(Uri.parse('https://7food.kz/api/users/histories/$id/details'), headers: headers);
 
     if (response.statusCode == 200) {
-      return HistoryProducts.fromJson(json.decode(response.body));
+      return HistoryDetails.fromJson(json.decode(response.body));
     } else {
       print(response.statusCode);
       throw Exception(response.reasonPhrase);

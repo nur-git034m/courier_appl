@@ -12,16 +12,11 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   final _formKey = GlobalKey<FormState>();
 
-   int phoneNumber =0 ;
-   String  password = '';
-  
+  int phoneNumber = 0;
+  String password = '';
 
-  final phoneController =TextEditingController();
+  final phoneController = TextEditingController();
   final passwordController = TextEditingController();
-
-
-
- 
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +62,6 @@ class _AuthScreenState extends State<AuthScreen> {
                       return null;
                     },
                     onSaved: (value) => phoneController.text = value!,
-                    
                   ),
                   TextFormField(
                     decoration: const InputDecoration(labelText: 'Пароль'),
@@ -92,7 +86,7 @@ class _AuthScreenState extends State<AuthScreen> {
             ),
             width: 308,
             height: 227,
-            decoration:  BoxDecoration(
+            decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(20.0),
@@ -113,7 +107,7 @@ class _AuthScreenState extends State<AuthScreen> {
           Container(
             width: MediaQuery.of(context).size.width * 0.5,
             margin: EdgeInsets.only(
-                left: MediaQuery.of(context).size.width * 0.25,
+                left: MediaQuery.of(context).size.width * 0.22,
                 top: 465,
                 bottom: 17),
             child: ElevatedButton(
@@ -125,21 +119,21 @@ class _AuthScreenState extends State<AuthScreen> {
                 'Отправить',
                 style: TextStyle(fontSize: 20.0),
               ),
-              onPressed: (){
+              onPressed: () {
                 final isValid = _formKey.currentState!.validate();
-                if(isValid){
-                    _formKey.currentState!.save();
-                    final message = 'Telephone: $phoneNumber /n Password: $password';
-                
+                if (isValid) {
+                  _formKey.currentState!.save();
+                  final message =
+                      'Telephone: $phoneNumber /n Password: $password';
                 }
-                 UserService().LoginNumberAndPassword(phoneController.text, passwordController.text, context);
+                UserService().LoginNumberAndPassword(
+                    phoneController.text, passwordController.text, context);
               },
-             
             ),
           ),
           Container(
             margin: EdgeInsets.only(
-              left: MediaQuery.of(context).size.width * 0.35,
+              left: MediaQuery.of(context).size.width * 0.32,
               top: 498,
             ),
             child: TextButton(

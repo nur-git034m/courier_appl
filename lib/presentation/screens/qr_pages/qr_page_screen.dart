@@ -1,9 +1,18 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:courier_appl/data/services/list_shops_service.dart';
+import 'package:courier_appl/data/services/qr_page_service.dart';
+import 'package:courier_appl/models/list_shops.dart';
+import 'package:courier_appl/models/list_shops.dart';
+
 import 'package:courier_appl/presentation/screens/addition_details/success_add.dart';
+import 'package:courier_appl/presentation/screens/auth_screen/auth_screend.dart';
+import 'package:courier_appl/presentation/screens/show_screen/show_screen.dart';
+import 'package:courier_appl/presentation/screens/your_action_choice/your_choice.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:pin_dot/pin_dot.dart';
@@ -17,6 +26,25 @@ class QrPageScreen extends StatefulWidget {
 }
 
 class _QrPageScreenState extends State<QrPageScreen> {
+  List showcasID = [];
+
+  void getLength() async {
+    showInfo = await List_shops_Service().getListofLocations()  ;
+     for(var i in showInfo.data){
+        showcasID.add(i.id);
+    }
+    print(' $showcasID');
+  }
+   @override
+   void initState() { 
+     super.initState();
+     getLength();
+   }
+   
+  
+
+  late ListShops showInfo;
+
   final String pin_code = '123456';
 
   final textEditingController = TextEditingController();
@@ -36,8 +64,34 @@ class _QrPageScreenState extends State<QrPageScreen> {
     controller!.resumeCamera();
   }
 
+  void _onQRViewCreated(QRViewController controller) {
+    setState(() {
+      this.controller = controller;
+    });
+    controller.scannedDataStream.listen((scanData) {
+      print('ScanData code: ${scanData.code}');
+      controller.pauseCamera();
+      if(showcasID.contains(int.parse(scanData.code))){
+        
+        QrService().postQrScanner(scanData.code, context);
+      }else{
+        controller.resumeCamera();
+      }
+    });
+  }
+
+  void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
+    log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
+    if (!p) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('no Permission')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: DefaultTabController(
@@ -73,7 +127,7 @@ class _QrPageScreenState extends State<QrPageScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 45),
+                    padding:  EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.height * 0.041,),
                     child: Center(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -94,32 +148,37 @@ class _QrPageScreenState extends State<QrPageScreen> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const SuccessAdd()));
-                            } 
+                                      builder: (context) =>
+                                     const YourChoicePage() ));
+                            }
                           },
                           appContext: context,
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(height:15 ,),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 7),
-                    child: Text('Ввести код который отоброжен на холодильнике ',
-                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 20,
-                      
-                    ),),
+                  const SizedBox(
+                    height: 15,
                   ),
-                  const SizedBox(height: 40,),
+                   Padding(
+                    padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.height * 0.02,),
+                    child: const Text(
+                      'Ввести код который отоброжен на холодильнике ',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 40,
+                  ),
                   IconButton(
-            icon: const Icon(FontAwesomeIcons.times),
-            onPressed: () {},
-            color: const Color(0xFF613EEA),
-            iconSize: 34,
-          )
-          
+                    icon: const Icon(FontAwesomeIcons.times),
+                    onPressed: () {},
+                    color: const Color(0xFF613EEA),
+                    iconSize: 34,
+                  )
                 ],
               )
             ],
@@ -130,6 +189,7 @@ class _QrPageScreenState extends State<QrPageScreen> {
   }
 
   Widget _buildQrView(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
     // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
     var scanArea = (MediaQuery.of(context).size.width < 400 ||
             MediaQuery.of(context).size.height < 400)
@@ -178,7 +238,7 @@ class _QrPageScreenState extends State<QrPageScreen> {
           ),
         ),
         Container(
-            padding: const EdgeInsets.only(top: 390),
+            padding:  EdgeInsets.only(top: screenSize.width * 1,),
             child: const Center(
                 child: Text(
               'Введите камеру на QR code',
@@ -188,7 +248,7 @@ class _QrPageScreenState extends State<QrPageScreen> {
               ),
             ))),
         Container(
-          padding: const EdgeInsets.only(top: 510),
+          padding:  const EdgeInsets.only(top: 510),
           child: Center(
               child: IconButton(
             icon: const Icon(FontAwesomeIcons.times),
@@ -199,25 +259,5 @@ class _QrPageScreenState extends State<QrPageScreen> {
         ),
       ],
     ));
-  }
-
-  void _onQRViewCreated(QRViewController controller) {
-    setState(() {
-      this.controller = controller;
-    });
-    controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        result = scanData;
-      });
-    });
-  }
-
-  void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
-    log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
-    if (!p) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('no Permission')),
-      );
-    }
   }
 }

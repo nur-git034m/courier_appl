@@ -45,6 +45,7 @@ dependencies:
   qr_flutter: ^4.0.0
   qr_code_scanner: ^0.5.2
   pin_code_fields: ^7.3.0
+  flutter_pusher: ^1.0.3
   
 
 dev_dependencies:

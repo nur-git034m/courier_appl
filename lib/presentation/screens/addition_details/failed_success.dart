@@ -21,7 +21,7 @@ class _FailedSuccessState extends State<FailedSuccess> {
           )),
       body: Center(
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 100),
+          padding:  EdgeInsets.symmetric(  vertical: MediaQuery.of(context).size.width * 0.1,),
           child: Column(
             children: [
               const Text(
@@ -33,17 +33,17 @@ class _FailedSuccessState extends State<FailedSuccess> {
                     fontSize: 25.0),
               ),
             
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 32),
-                child: Icon(
+               Padding(
+                padding: EdgeInsets.symmetric(  vertical: MediaQuery.of(context).size.width * 0.13,),
+                child: const Icon(
                   FontAwesomeIcons.checkCircle,
                   size: 149,
                   color: Color(0xFF952323),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 30),
-                child: Text(
+               Padding(
+                padding: EdgeInsets.symmetric(  vertical: MediaQuery.of(context).size.width * 0.12,),
+                child: const Text(
                   'Пополните карту для новой покупки',
                   style: TextStyle(
                       color: Color(

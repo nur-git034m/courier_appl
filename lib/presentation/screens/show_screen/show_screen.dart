@@ -53,12 +53,12 @@ class _ShowScreenState extends State<ShowScreen> {
                     ),
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(2),
                       boxShadow: [
                         BoxShadow(
                           color: AppColors.kshadow,
-                          blurRadius: 3,
-                          offset: const Offset(0, 3),
+                          blurRadius: 5,
+                          spreadRadius: 4,
+                          offset: const Offset(0, 5),
                         ),
                       ],
                     ),
@@ -67,40 +67,27 @@ class _ShowScreenState extends State<ShowScreen> {
                       child: Center(
                         child: Row(
                           children: [
-                            Image.network(
+                            networkImage(
+                              context,
                               snapshot.data!.data[index].image,
-                              fit: BoxFit.fitWidth,
-                              width: MediaQuery.of(context).size.width * 0.270,
-                              height:
-                                  MediaQuery.of(context).size.height * 0.2,
                             ),
                             Expanded(
                                 child: Column(
                               children: [
-                                Card(
-                                  color: const Color(0xFFEFF2F7),
-                                  child: ListTile(
-                                    title: const Text('Название'),
-                                    trailing: Text(
-                                      snapshot.data!.data[index].name,
-                                    ),
-                                  ),
+                                showCard(
+                                  snapshot,
+                                  index,
+                                  'Название',
+                                  snapshot.data!.data[index].name,
                                 ),
-                                Card(
-                                  color: const Color(0xFFEFF2F7),
-                                  child: ListTile(
-                                      title: const Text('Количество'),
-                                      trailing: Text(snapshot
-                                          .data!.data[index].quantity)),
+                                showCard(
+                                  snapshot,
+                                  index,
+                                  'Количество',
+                                  snapshot.data!.data[index].quantity,
                                 ),
-                                Card(
-                                  color: const Color(0xFFEFF2F7),
-                                  child: ListTile(
-                                    title: const Text('Цена'),
-                                    trailing: Text(
-                                        snapshot.data!.data[index].price),
-                                  ),
-                                )
+                                showCard(snapshot, index, 'Цена',
+                                    snapshot.data!.data[index].price)
                               ],
                             ))
                           ],
@@ -128,6 +115,24 @@ class _ShowScreenState extends State<ShowScreen> {
         activeIndex: _bottomNavIndex,
         gapLocation: GapLocation.center,
         onTap: (index) => setState(() => _bottomNavIndex = index),
+      ),
+    );
+  }
+
+  Card showCard(AsyncSnapshot<ShowCase> snapshot, int index, String textShow,
+      String traiShow) {
+    return Card(
+      color: const Color(
+        0xFFEFF2F7,
+      ),
+      child: ListTile(
+        title: Text(
+          textShow,
+          style: TextStyle(color: Color(0xFF47536D)),
+        ),
+        trailing: Text(
+          traiShow,
+        ),
       ),
     );
   }
